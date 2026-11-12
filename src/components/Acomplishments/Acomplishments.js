@@ -1,59 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import {
   Section,
   SectionDivider,
   SectionTitle,
 } from "../../styles/GlobalComponents";
-import { Box, Boxes, BoxNum, BoxText } from "./AcomplishmentsStyles";
-import axios from "axios";
-
-const defaultData = [
-  { number: "$100K", text: "Hackathon Prize Won" },
-  { number: "4+", text: "Solana Programs on Mainnet" },
-  { number: "2.5K+", text: "Users Served" },
-];
+import { Box, Boxes, BoxImg, BoxNum, BoxText } from "./AcomplishmentsStyles";
+import { Achievements } from "../../constants/constants";
+import Lightbox, { openOnKey } from "../Lightbox/Lightbox";
 
 const Acomplishments = () => {
-  const [data, setData] = useState(defaultData);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: userData } = await getFollowers();
-        if (userData) {
-          setData((current) => [
-            ...current,
-            { number: `${userData.followers}+`, text: "Github Followers" },
-          ]);
-        }
-      } catch (err) {
-        // Rate limited or offline: keep the static tiles.
-      }
-    })();
-  }, []);
+  const [enlarged, setEnlarged] = useState(null);
+  const close = useCallback(() => setEnlarged(null), []);
 
   return (
-    <Section>
-      <SectionTitle>Personal Achievements</SectionTitle>
-      <Boxes>
-        {data.map((card, index) => (
-          <Box key={index}>
-            <BoxNum>{card.number}</BoxNum>
-            <BoxText>{card.text}</BoxText>
-          </Box>
-        ))}
-      </Boxes>
+    <Section id="achievements">
       <SectionDivider />
+      <SectionTitle>Achievements</SectionTitle>
+      <Boxes>
+        {Achievements.map((item, index) => {
+          const open = () => setEnlarged({ src: item.image, alt: item.alt });
+          return (
+            <Box
+              key={index}
+              {...(item.image && {
+                role: "button",
+                tabIndex: 0,
+                "aria-label": `Enlarge ${item.title} certificate`,
+                onClick: open,
+                onKeyDown: openOnKey(open),
+                $zoom: true,
+              })}
+            >
+              {item.image && (
+                <BoxImg
+                  src={item.image}
+                  alt={item.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+              <BoxNum as="h3">{item.title}</BoxNum>
+              <BoxText>{item.detail}</BoxText>
+            </Box>
+          );
+        })}
+      </Boxes>
+      <Lightbox image={enlarged} onClose={close} />
     </Section>
   );
 };
 
 export default Acomplishments;
-
-const getFollowers = () => {
-  return axios.get(
-    "https://api.github.com/users/tanv33"
-    // "https://api.github.com/users/tanv33/followers?per_page=100"
-  );
-};

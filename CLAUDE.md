@@ -4,87 +4,93 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Single-page personal portfolio. Next.js 10 (pages router) + React 17 + styled-components, statically exported and deployed to Firebase Hosting (project `tanveer-e09d4`, live at https://tanveer-e09d4.web.app).
+Single-page student portfolio, built on Tanveer Khan's portfolio template (no LICENSE in the original repo, so the footer keeps a credit line: keep it). Next.js 10 (pages router) + React 17 + styled-components, statically exported to `out/` and deployable to Firebase Hosting (project id in `.firebaserc` is still a placeholder).
 
-No tests, no linter, no TypeScript, no `next.config.js`. Prettier is the only tooling: `yarn format` / `yarn format:check` (config in `.prettierrc`, scope in `.prettierignore`). Package manager: yarn (`yarn.lock` is committed).
+No tests, no linter, no TypeScript, no `next.config.js`. Prettier is the only tooling: `yarn format` / `yarn format:check`. Package manager: yarn v1 (`yarn.lock` is committed).
+
+`PORTFOLIO_NOTES.md` is the working list of `[BRACKETED]` placeholders still waiting for real info, with file and line for each, plus the checks that have been run. Keep it in sync with every content change.
 
 ## Commands
 
 ```bash
 yarn dev      # dev server, :3000
 yarn build    # next build && next export -> out/
-yarn start    # serve the build
+yarn start    # next start (not used for the static export)
 ```
 
-Scripts were originally written with Windows `SET NODE_OPTIONS=... &&` syntax, which on Linux/macOS fails with `SET: command not found` (exit 127) and short-circuits the `&&`, so Next never launched. They now use the POSIX inline-env form (`NODE_OPTIONS=--openssl-legacy-provider next dev`) — this will not work on cmd.exe; add `cross-env` if Windows support is ever needed.
-
-`--openssl-legacy-provider` is required, not optional. Without it Next 10 crashes on startup under Node 17+ with `ERR_OSSL_EVP_UNSUPPORTED` (legacy MD4 hashing vs. OpenSSL 3). Verified on Node 24.
-
-With no `next.config.js`, Next 10.2 defaults to webpack 5.
-
-Deploy — `firebase.json` serves `out/`, so a build+export must run first:
+The scripts use the POSIX inline-env form (`NODE_OPTIONS=--openssl-legacy-provider next dev`), so on Windows yarn's default cmd.exe shell fails with `'NODE_OPTIONS' is not recognized`. Run them through Git Bash without editing package.json:
 
 ```bash
-firebase deploy --only hosting
+npm_config_script_shell="C:\Program Files\Git\bin\bash.exe" yarn dev
 ```
+
+`--openssl-legacy-provider` is required: without it Next 10 crashes under Node 17+ with `ERR_OSSL_EVP_UNSUPPORTED`. Verified working on Node 26. With no `next.config.js`, Next 10.2 uses webpack 5.
+
+Deploy: build first, then `firebase deploy --only hosting` (serves `out/`).
 
 ## Architecture
 
-**Content lives in `src/constants/constants.js`.** `projects`, `TimeLineData`, and all social/contact URLs are exported from there and consumed by components. Adding or editing a project, timeline year, or profile link is a constants-file edit, not a component edit. Older projects are commented out rather than deleted. Achievement tiles are the exception — they live in `defaultData` inside `Acomplishments.js`.
+**Content lives in `src/constants/constants.js`:** `projects`, `TimeLineData`, `Achievements`, full name, résumé path, social URLs, email, phone and location. Section intro paragraphs (Hero, About, Skills) and the footer closing line are written inline in their components.
 
-**Two sections are item-count-bound.** Adding entries breaks their layout, so match the content to the container or change the CSS deliberately:
+**Page composition.** `src/pages/index.js` sets `<title>`/meta via `next/head`, then renders `Layout` (Header + `<main>` + Footer) around Hero, Projects, Technologies, Timeline, Acomplishments, in that order. Nav order differs from page order on purpose: Home, About, Skills, Projects, Achievements, Contact. Each nav link is a `next/link` with `passHref` to an `id`:
 
-- `TimeLineData` must stay at **5 entries**. `CarouselItem` is `max-width: 196px` inside a 1040px track with `justify-content: space-between` and no overflow scroll above the `sm` breakpoint, so a 6th entry overflows the section. The years are re-scoped rather than appended (currently 2020, 2022, 2023, 2024, 2026).
-- Achievement tiles are **3 static + 1 appended at runtime**. `Boxes` uses `repeat(auto-fit, minmax(200px, 1fr))` specifically so both 3 and 4 tiles fill the row — it was `repeat(4, 1fr)` with an `nth-child(2n){grid-row:2}` mobile hack that assumed an even count.
+| Nav | id | Component | Heading |
+| --- | --- | --- | --- |
+| Home | `home` | Hero | h1 "Hi, I'm …" |
+| About | `about` | TimeLine | "About Me" + 6-entry timeline (one year each) |
+| Skills | `tech` | Technologies | "Skills" |
+| Projects | `projects` | Projects | "Projects" |
+| Achievements | `achievements` | Acomplishments (sic) | "Achievements" |
+| Contact | `contact` | Footer (`FooterWrapper`) | "Contact Me" |
 
-**The PartyCade** has `source: null` because its Play Store listing is delisted (404, verified with a browser user-agent); the card renders without links rather than shipping a 404. Two others were recovered onto new hosts and should not be reverted to their old URLs: Dreamhub moved off the dead `dreamhub.art` domain to `dreamhub-frontend.vercel.app`, and KC-Elite is linked to its **iOS App Store** listing since the Play Store one is also delisted. Re-verify any store or demo URL before adding it — several in this file have rotted.
+Renaming an id breaks the nav. Heading order is one h1 (Hero), h2 per section, h3 inside; components whose styled tag differs use `as="h3"`.
 
-The résumé now lives only as a PDF at `public/Tanveer_Khan_Resume.pdf` and is served by
-`next export` (previously a CakeResume link). It is **not currently linked from the site** —
-the Hero's Resume button and its "Resume last updated …" note are commented out in
-`Hero.js`, so `ResumeUrl` and `ResumeUpdated` are live constants with no render path until
-that block is uncommented. The markdown
-source docs that used to sit at the repo root (`Tanveer-info.md`, `Tanveer-resume.md`,
-`Tanveer-resume-org.md`) were deleted — the PDF is the single source of truth, so there is
-no in-repo text to diff the site copy against. When the PDF is replaced, update the site
-copy by hand and bump `ResumeUpdated` in `src/constants/constants.js` — it is what the
-hidden note renders, and will otherwise be stale on the day the button comes back.
+**Item-count limits.**
+- `TimeLineData`: any count, one year per entry, newest first. It renders as a vertical list (`YearList`, max 720px) with a bulleted `items` array per year. Type sizes step off `SectionText`: year 28/24/20px, items 20/18/16px (desktop/md/sm).
+- `Achievements`: any count; tiles share the row equally (`auto-fit`), one per row on phones. Each tile can carry an `image` (+ `alt`) shown at 3:2 above the title; clicking the tile opens the image in the `Lightbox` popup. Tiles have no external links. Certificate images live in `public/images/achievements/`, all rendered at 1500x1000 so the tiles match.
+- `projects`: any count. One wide card per row: screenshot on the left at half the card width (2:1), title, description and stack on the right (`CardBody`). From `md` down the card stacks, image on top.
 
-Claims the site deliberately does **not** make, and must not regain:
+**Hero.** `index.js` renders `<Section grid>` with Hero (text) and `HeroVisual` (position: relative) holding `BgAnimation` and `ProfilePhoto` (`public/images/profile.jpg`), which is centred on the animation with `translate(-50%, -50%)`. The grid's children are forced to `width: 100%` (Section `grid` prop) because the `width: max-content` h1 otherwise pushes the text column under the animation. At `md` and below the grid stacks to one column.
 
-- **"50K requests/second"** was retired from the résumé. It used to appear in the Hero, the
-  About copy, the Technologies intro, the 2026 timeline entry and an achievement tile; all
-  five were reworded. Do not reintroduce it.
-- The Tumi Labs title is **"Solana & Backend Engineer"** (older drafts said "MERN & Solana
-  Engineer"). Backend-Template is listed at "36+ stars" in the PDF; the repo actually has 38.
+The source carries no comments (removed on request on 2026-11-13); don't add new ones.
 
-**Project card images are local, in `public/images/`, snake_case.** They were once Firebase Storage URLs on bucket `bucket-a2d0b.appspot.com`, which no longer exists — every object 404s and so does the bucket root. Do not reintroduce Firebase Storage URLs; no bucket for this project is reachable, and the `firebase` npm package was removed from dependencies (only the `firebase` CLI is used, for deploys).
+**Header.** No logo or name: the nav links are centred on the page (grid `1fr auto 1fr`) with the social icons on the right. From `lg` down the nav and the icons each get a centred row.
 
-All 10 active projects have an image. Source ratios span 1.50 (the 3:2 webp marketing composites) to 2.13 (raw screenshots), so `Img` pins `aspect-ratio: 16 / 9` with `object-fit: cover` — a compromise that crops either extreme by roughly 8% rather than 25%. Normalise the assets to one ratio and this can be tightened. Images are `loading="lazy"`; `Projects.js` renders `Img` only when `image` is set, and `BlogCard` takes a `hasImage` prop that drops its top padding when one is present.
+**Projects.** Card buttons: `visit` → "Live", `source` → "Code"; each renders only when set, so missing links are `null`, never `"#"`. All external links use `target="_blank" rel="noopener noreferrer"`. Images live in `public/images/projects/` (path per project's `image` field), and clicking one opens it in the `Lightbox` popup (`src/components/Lightbox/`: portal to `body`, closes on overlay click, the × button or Escape, locks page scroll while open; the image scales to the largest size the viewport allows, up to 1800px wide, with a light SVG sharpen filter); `Img` crops to 2:1 with `object-fit: cover` (matches the ~2.03:1 screenshots), and alt text comes from each project's `alt` field.
 
-`BlogCard` is a flex column with `UtilityList` pinned via `margin-top: auto`, and `GridContainer` uses `place-items: stretch`, so rows stay even despite uneven description lengths.
+**Social icons** (header and footer) read `GithubUrl`, `LinkedInUrl`, `OtherUrl` (Facebook icon); `null` hides an icon. The phone column in the footer hides when `MobileNumber` is `null`.
 
-Screenshots for the commented-out legacy projects are still committed (`postman.png`, `todo_app.png`, …) and are paired to their project inside the commented block via a `// image:` line.
+**Styling is styled-components only.**
+- `src/themes/default.js`: fonts, colors, breakpoints (all `max-width`). `html { font-size: 62.5% }`, so `1rem` = 10px.
+- Fonts (Google Fonts, loaded in `_document.js`): `fonts.title` Schibsted Grotesk for the h1, `fonts.sub` Red Hat Display for h2–h6, `fonts.main` Montserrat for body text and buttons.
+- Spacing scale (desktop / md / sm): 64 / 48 / 40px between sections (`Section` padding-top; the hero grid keeps its own); divider to title and title to text 24 / 20 / 16px; content blocks (`GridContainer`, `List`, `YearList`, `Boxes`, `LinkList`) add `margin-top` 16 / 12 / 8px, so title or intro to content is 40 / 32 / 24px. Every section, footer included, opens with a `SectionDivider` and none ends with one.
+- `src/styles/GlobalComponents/index.js`: shared primitives (`Section`, `SectionTitle`, `SectionText`, `SectionDivider`, `ButtonBack`/`LinkButtonFront`). Reuse these.
+- Per-component styles in sibling `<Name>Styles.js`.
+- Never put a `//` comment inside styled CSS: one containing an apostrophe made stylis drop every rule after it, silently.
+- `_document.js` does the styled-components SSR (`ServerStyleSheet`), paired with the babel plugin in `.babelrc`; keep both.
 
-**Styling is styled-components only.** No CSS files, no CSS modules.
+**No runtime data.** The page is fully static; there are no API calls.
 
-- `src/pages/_app.js` wraps everything in `src/styles/theme.js`, which is `ThemeProvider` + `GlobalStyles`.
-- `src/themes/default.js` holds the design tokens: `fonts`, `colors`, and `breakpoints` (media-query strings, all `max-width` — mobile-last). Consume via `${props => props.theme.breakpoints.md}`.
-- `src/styles/globals.js` sets `html { font-size: 62.5% }` — so `1rem` = 10px.
-- `src/styles/GlobalComponents/index.js` is the shared primitive library (`Section`, `SectionTitle`, `SectionText`, `SectionDivider`, `ButtonBack`/`ButtonFront`, link/icon containers). Reuse these rather than adding new section-level styled components.
-- Per-component styles live in a sibling `<Name>Styles.js`. Every styled export in these files is used; unused ones were deleted, so treat a new unreferenced export as dead code.
-- `_document.js` does the styled-components SSR dance (`ServerStyleSheet`), paired with the `styled-components` babel plugin (`ssr: true`) in `.babelrc`. Both must stay in sync or class names hydrate mismatched.
+## Portfolio rules (apply to every task)
 
-**Page composition.** `src/pages/index.js` is the only real page: `Layout` (Header + `<main>` + Footer) wrapping `Hero`, `Projects`, `Technologies`, `Timeline`, `Acomplishments` in order. Header nav uses hash links matched to `id` props on `Section` (`#projects`, `#tech`, `#about`) — renaming a section id breaks nav.
+TEMPLATE IS FINAL
+- Do not change layout, styled-components styles, src/themes/default.js (colors, fonts, breakpoints), animations, or component structure.
+- Only change: text content, data arrays in constants, images in public/, link targets, alt text, page <title>/meta, and the number of items in existing arrays.
+- If something is missing (a nav link, a section id), reuse the existing component and styled elements exactly. Add no new styled components unless a responsive bug forces it, and keep that fix minimal.
+- No new npm packages. Icons only from what the template already imports (react-icons, etc.).
+- Remove all of Tanveer's content: name, links, resume PDF, images, GitHub API calls, firebase project id references, and the README text about him.
 
-Note `Timeline` renders under the heading "About Me" (`id="about"`) — the component name and the visible heading differ.
+NO UI SLOP
+- No added gradients, glow effects, emoji headings, typing animations, or decoration.
+- No invented numbers ("50+ projects", follower counts, skill percentages). Achievements are real certificates, awards, and seminars.
+- No stock or placeholder images left in the final build.
 
-There is **no Experience, Education or Open Source section**. The résumé's four employers, the BSCS degree, the godot-solana-sdk contribution, Backend-Template and the Medium article are documented in the two root markdown files but deliberately absent from the site — the largest remaining gap if hiring signal matters.
+HUMAN-SOUNDING TEXT
+- First person, plain words, mixed sentence lengths. It should sound like a real student talking about their own work.
+- Banned: passionate, driven, dedicated, leverage, seamless, cutting-edge, innovative, robust, dynamic, journey, "dive into", "crafting digital experiences", "turning ideas into reality", "results-driven", "highly motivated", "fast-paced world".
+- No triple-adjective lists, no em-dash chains, no slogan-style closing lines.
+- Specific over impressive: say what was built, with what tool, for whom, and what was hard.
+- Don't start every sentence with "I".
 
-**Buttons.** The Hero has exactly one: "Let's Talk", which opens a Gmail compose window
-prefilled from `GmailComposeUrl` (subject + opening body line), with a small `MailToUrl`
-fallback link under it for visitors Gmail would bounce to a sign-in. The Upwork and Fiverr
-buttons were removed outright. One variant: `LinkButton.js` renders `ButtonBack` +
-`LinkButtonFront` (an `<a>`, uses `href`/`target`) — the layered-gradient effect is the outer div plus an inner element that fades on hover. A `<button>` twin (`Button.js` + `ButtonFront`, driven by `onClick`) existed but was never imported; both were removed. Recover them from git history if a real button is ever needed.
-
-**Runtime data.** `Acomplishments.js` renders its static `defaultData` tiles, then fetches `https://api.github.com/users/tanv33` via axios on mount and appends a live "Github Followers" tile. The call is wrapped in try/catch — an unauthenticated GitHub API request is rate-limited at 60/hour per IP, so failure is expected and must degrade to the static tiles rather than throw. Tile values carry their own suffix (`"$100K"`, `"4+"`); `BoxNum` renders `card.number` verbatim rather than appending `+`. Because the site is statically exported, this is the only live data on the page — the CRA-style `pages/api/` scaffold was deleted, since API routes cannot work under `next export`.
+PLACEHOLDERS
+- Until real info is provided, use [BRACKETED] placeholders. Keep every placeholder, with its file and line, in PORTFOLIO_NOTES.md.

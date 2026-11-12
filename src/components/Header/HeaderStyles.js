@@ -1,53 +1,55 @@
-import { IoIosArrowDropdown } from "react-icons/io";
 import styled from "styled-components";
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 1fr;
-  grid-column-gap: 2rem;
-  padding: 1rem;
-  padding-top: 2rem;
-
-  @media ${(props) => props.theme.breakpoints.sm} {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 60px);
-    grid-column-gap: 0.5rem;
-    grid-row-gap: 0.5rem;
-  }
-`;
-export const Div1 = styled.div`
-  grid-area: 1 / 1 / 2 / 2;
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  @media ${(props) => props.theme.breakpoints.sm} {
-    grid-area: 1 / 1 / 2 / 3;
-  }
-`;
-export const Div2 = styled.div`
-  grid-area: 1 / 2 / 2 / 4;
-  display: flex;
-  justify-content: space-around;
-  @media ${(props) => props.theme.breakpoints.sm} {
-    grid-area: 2 / 2 / 3 / 5;
-  }
-`;
-export const Div3 = styled.div`
-  grid-area: 1 / 5 / 2 / 6;
-  display: flex;
-  justify-content: space-around;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  column-gap: 2rem;
+  padding: 2rem 48px 1rem;
+
+  @media ${(props) => props.theme.breakpoints.lg} {
+    grid-template-columns: 1fr;
+    row-gap: 0.8rem;
+  }
+
   @media ${(props) => props.theme.breakpoints.sm} {
-    align-items: center;
-    grid-area: 1 / 4 / 2 / 6;
+    padding: 1.6rem 16px 0.8rem;
   }
 `;
 
-// Navigation Links
+export const Div2 = styled.div`
+  grid-column: 2;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 3.2rem;
+
+  @media ${(props) => props.theme.breakpoints.lg} {
+    grid-column: 1;
+    column-gap: 2.4rem;
+  }
+
+  @media ${(props) => props.theme.breakpoints.sm} {
+    column-gap: 0;
+  }
+`;
+
+export const Div3 = styled.div`
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  @media ${(props) => props.theme.breakpoints.lg} {
+    grid-column: 1;
+    justify-self: center;
+  }
+`;
+
 export const NavLink = styled.a`
-  font-size: 2rem;
+  font-size: 1.8rem;
+  font-weight: 500;
   line-height: 32px;
   color: rgba(255, 255, 255, 0.75);
   transition: 0.4s ease;
@@ -56,20 +58,22 @@ export const NavLink = styled.a`
     opacity: 1;
     cursor: pointer;
   }
+  @media ${(props) => props.theme.breakpoints.md} {
+    display: inline-block;
+    padding: 6px 4px;
+  }
   @media ${(props) => props.theme.breakpoints.sm} {
-    padding: 0.5rem;
+    font-size: 1.6rem;
+    padding: 6px 8px;
   }
 `;
-
-/// DropDown Contact
-
-// Social Icons
 
 export const SocialIcons = styled.a`
   transition: 0.3s ease;
   color: white;
   border-radius: 50px;
   padding: 8px;
+  display: flex;
   &:hover {
     background-color: #212d45;
     transform: scale(1.2);

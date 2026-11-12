@@ -14,7 +14,7 @@
         ]
       },
       {
-        "comment": "Project screenshots are NOT content-hashed — replacing scribble.webp reuses the same URL. 7 days keeps repeat visits free without stranding viewers on a stale image for a year.",
+        "comment": "Project screenshots are NOT content-hashed — replacing project-1.png reuses the same URL. 7 days keeps repeat visits free without stranding viewers on a stale image for a year.",
         "source": "**/*.@(png|jpg|jpeg|webp|gif|svg|ico)",
         "headers": [
           { "key": "Cache-Control", "value": "public, max-age=604800" }

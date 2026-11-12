@@ -1,82 +1,42 @@
-# Tanveer Khan — Portfolio
+# James Adrian Dysangco | Portfolio
 
-Single-page personal portfolio. **[tanveer-e09d4.web.app](https://tanveer-e09d4.web.app)**
+My personal portfolio: a one-page site with who I am, the projects I've built, my skills, my certificates, and how to reach me.
 
-Next.js 10 (pages router) + React 17 + styled-components, statically exported and
-deployed to Firebase Hosting. No CSS files — every style is a styled component,
-with design tokens in `src/themes/default.js`.
+**Live Demo:** [LIVE SITE URL](https://example.com)
 
-## Getting started
+## Tech stack
 
-Requires Node 17+ and yarn (`yarn.lock` is committed — don't use npm).
+- Next.js 10 (pages router), exported as a static site
+- React 17
+- styled-components
+- react-icons
+- Google Fonts: Schibsted Grotesk, Red Hat Display, Montserrat
 
-```bash
-yarn install
-yarn dev          # http://localhost:3000
-```
+## Features
 
-| Script              | Does                                 |
-| ------------------- | ------------------------------------ |
-| `yarn dev`          | dev server on :3000                  |
-| `yarn build`        | `next build && next export` → `out/` |
-| `yarn start`        | serve the production build           |
-| `yarn format`       | prettier over the repo               |
-| `yarn format:check` | fail if anything is unformatted      |
+- Sections: Home, Projects, Skills, About Me (with a timeline), Achievements, Contact
+- Project screenshots and certificates open in a full-screen popup
+- Responsive layout for desktop, tablet and phone
+- Fully static: no backend, no API calls
+- Contact links for Gmail, email, phone, GitHub, LinkedIn and Facebook
 
-The four Next scripts set `NODE_OPTIONS=--openssl-legacy-provider`. This is required, not
-optional: without it Next 10 crashes on startup under Node 17+ with
-`ERR_OSSL_EVP_UNSUPPORTED`. The form used is POSIX-only — add `cross-env` if you
-ever need to run this on cmd.exe.
+## Run locally
 
-## Deploy
-
-`firebase.json` serves `out/`, so build first:
+Needs Node 17 or newer.
 
 ```bash
-yarn build
-firebase deploy --only hosting
+npm install
+npm run dev       # http://localhost:3000
 ```
 
-Cache headers are set per asset class in `firebase.json`: hashed Next bundles are
-immutable for a year, images get 7 days (their filenames aren't hashed, so
-`immutable` would strand viewers on a stale screenshot), and the résumé PDF
-revalidates hourly.
+`npm run build` builds and exports the static site to `out/`.
 
-## Editing content
+On Windows, the scripts use POSIX shell syntax, so run them through Git Bash:
 
-Almost nothing lives in the components:
-
-- **`src/constants/constants.js`** — projects, timeline entries, contact details
-  and social URLs. Adding a project or changing a link is an edit here, not in a
-  component. Retired projects are commented out rather than deleted.
-- **`public/images/`** — project screenshots, `snake_case`, named after the
-  project. Cards crop them to 16:9.
-- **`public/Tanveer_Khan_Resume.pdf`** — the résumé, self-hosted and linked from
-  the hero. When you replace it, bump `ResumeUpdated` in `constants.js`; it's
-  displayed as "Resume last updated …" and will otherwise go stale.
-- Achievement tiles are the exception — they live in `Acomplishments.js`.
-
-Two containers are **item-count-bound**, so match the content to them or change
-the CSS deliberately:
-
-- `TimeLineData` must stay at **5 entries** — a 6th overflows the carousel track.
-- Achievement tiles are **3 static + 1 fetched at runtime** (GitHub followers).
-
-## Structure
-
-```
-src/
-  pages/          _app, _document (styled-components SSR), index
-  layout/         Header + <main> + Footer wrapper
-  components/     one folder per section, styles in a sibling <Name>Styles.js
-  constants/      all page content
-  styles/         GlobalComponents (shared primitives), globals, theme
-  themes/         colors, fonts, breakpoints
+```bash
+npm_config_script_shell="C:\Program Files\Git\bin\bash.exe" npm run dev
 ```
 
-Header nav uses hash links matched to `id` props on `Section` (`#projects`,
-`#tech`, `#about`) — renaming a section id breaks the nav.
+## Credit
 
-`CLAUDE.md` has the longer engineering notes: which external URLs have rotted,
-why some project cards have no link, and the constraints worth knowing before
-changing layout.
+Design inspired by Tanveer Khan's portfolio template.

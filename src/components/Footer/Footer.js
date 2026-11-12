@@ -1,7 +1,7 @@
 import React from "react";
-import { AiFillGithub, AiFillLinkedin, AiOutlineTwitter } from "react-icons/ai";
-import { FaMedium } from "react-icons/fa";
+import { AiFillFacebook, AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 
+import { SectionDivider, SectionTitle } from "../../styles/GlobalComponents";
 import { SocialIcons } from "../Header/HeaderStyles";
 import {
   CompanyContainer,
@@ -18,52 +18,85 @@ import {
   GithubUrl,
   LinkedInUrl,
   Location,
-  MediumUrl,
   MobileNumber,
   MobileNumberTel,
   PersonalEmail,
-  TwitterUrl,
+  OtherUrl,
 } from "../../constants/constants";
 
 const Footer = () => {
   return (
-    <FooterWrapper>
+    <FooterWrapper id="contact">
+      <SectionDivider colorAlt />
+      <SectionTitle>Contact Me</SectionTitle>
       <LinkList>
+        {MobileNumber && (
+          <LinkColumn>
+            <LinkTitle as="h3">Call</LinkTitle>
+            <LinkItem href={`tel:${MobileNumberTel}`}>{MobileNumber}</LinkItem>
+          </LinkColumn>
+        )}
         <LinkColumn>
-          <LinkTitle>Call</LinkTitle>
-          <LinkItem href={`tel:${MobileNumberTel}`}>{MobileNumber}</LinkItem>
-        </LinkColumn>
-        <LinkColumn>
-          <LinkTitle>Email</LinkTitle>
+          <LinkTitle as="h3">Email</LinkTitle>
           <LinkItem href={`mailto:${PersonalEmail}`}>{PersonalEmail}</LinkItem>
         </LinkColumn>
         <LinkColumn>
-          <LinkTitle>Based in</LinkTitle>
+          <LinkTitle as="h3">Based in</LinkTitle>
           <LinkItem as="span">{Location}</LinkItem>
         </LinkColumn>
       </LinkList>
       <SocialIconsContainer>
         <CompanyContainer>
           <Slogan>
-            Blockchain &amp; Backend Engineer &mdash; open to remote, hybrid or
-            relocation
+            Open to internships and web development projects. Email is the
+            fastest way to reach me.
           </Slogan>
         </CompanyContainer>
         <SocialContainer>
-          <SocialIcons href={GithubUrl} target="_blank">
-            <AiFillGithub size="3rem" />
-          </SocialIcons>
-          <SocialIcons href={LinkedInUrl} target="_blank">
-            <AiFillLinkedin size="3rem" />
-          </SocialIcons>
-          <SocialIcons href={TwitterUrl} target="_blank">
-            <AiOutlineTwitter size="3rem" />
-          </SocialIcons>
-          <SocialIcons href={MediumUrl} target="_blank">
-            <FaMedium size="3rem" />
-          </SocialIcons>
+          {GithubUrl && (
+            <SocialIcons
+              href={GithubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+            >
+              <AiFillGithub size="3rem" aria-hidden="true" />
+            </SocialIcons>
+          )}
+          {LinkedInUrl && (
+            <SocialIcons
+              href={LinkedInUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <AiFillLinkedin size="3rem" aria-hidden="true" />
+            </SocialIcons>
+          )}
+          {OtherUrl && (
+            <SocialIcons
+              href={OtherUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              <AiFillFacebook size="3rem" aria-hidden="true" />
+            </SocialIcons>
+          )}
         </SocialContainer>
       </SocialIconsContainer>
+      <LinkTitle as="p" style={{ textAlign: "center", marginTop: "32px" }}>
+        Design inspired by{" "}
+        <a
+          href="https://github.com/Tanv33/Tanveer-Portfolio"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "inherit", textDecoration: "underline" }}
+        >
+          Tanveer Khan
+        </a>
+        's portfolio template
+      </LinkTitle>
     </FooterWrapper>
   );
 };

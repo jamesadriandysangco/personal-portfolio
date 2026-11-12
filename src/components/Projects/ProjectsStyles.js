@@ -1,115 +1,126 @@
 import styled from "styled-components";
 
-/* Sources span 1.50 (the 3:2 webp marketing composites) to 2.13 (raw
-   screenshots), so no ratio fits all. 16:9 splits the difference: it crops the
-   composites ~8% top/bottom and the widest screenshots ~8% left/right, instead
-   of taking 25% off either. Normalise the assets to one ratio and this can be
-   tightened. */
 export const Img = styled.img`
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 2 / 1;
   object-fit: cover;
   display: block;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  width: 50%;
+  flex-shrink: 0;
+  align-self: center;
+  cursor: zoom-in;
+  transition: opacity 0.3s ease;
+  &:hover,
+  &:focus-visible {
+    opacity: 0.85;
+  }
+  @media ${(props) => props.theme.breakpoints.md} {
+    width: 100%;
+  }
 `;
 
 export const GridContainer = styled.section`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  padding: 3rem;
-  place-items: stretch;
-  column-gap: 2rem;
-  row-gap: 3rem;
+  grid-template-columns: 1fr;
+  row-gap: 32px;
+  margin-top: 16px;
+  @media ${(props) => props.theme.breakpoints.md} {
+    row-gap: 24px;
+    margin-top: 12px;
+  }
   @media ${(props) => props.theme.breakpoints.sm} {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem;
-    padding-bottom: 0;
+    row-gap: 24px;
+    margin-top: 8px;
   }
 `;
+
 export const BlogCard = styled.div`
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 3px 3px 20px rgba(80, 78, 78, 0.5);
   text-align: center;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  /* Cards used to be sized by their cover image. Without it, stretch to a
-     uniform height and pin the links to the bottom so rows stay even. */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   overflow: hidden;
-  padding-top: ${({ hasImage }) => (hasImage ? "0" : "2rem")};
-  @media ${(props) => props.theme.breakpoints.sm} {
-    max-width: none;
+  @media ${(props) => props.theme.breakpoints.md} {
+    flex-direction: column;
   }
 `;
+
+export const CardBody = styled.div`
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px;
+  @media ${(props) => props.theme.breakpoints.md} {
+    padding: 24px;
+  }
+  @media ${(props) => props.theme.breakpoints.sm} {
+    padding: 24px 16px;
+  }
+`;
+
 export const TitleContent = styled.div`
   text-align: center;
-  z-index: 20;
   width: 100%;
+  font-family: ${(props) => props.theme.fonts.sub};
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
 `;
 
 export const HeaderThree = styled.h3`
-  font-weight: 500;
-  letter-spacing: 2px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   color: #9cc9e3;
-  padding: 0.5rem 0;
-  font-size: 3rem;
+  font-size: 32px;
+  line-height: 40px;
+  text-transform: none;
+  @media ${(props) => props.theme.breakpoints.md} {
+    font-size: 26px;
+    line-height: 34px;
+  }
+  @media ${(props) => props.theme.breakpoints.sm} {
+    font-size: 22px;
+    line-height: 30px;
+  }
 `;
 
 export const Hr = styled.hr`
   width: 50px;
   height: 3px;
-  margin: 20px auto;
+  margin: 16px auto;
   border: 0;
   background: #d0bb57;
 `;
 
 export const CardInfo = styled.p`
   width: 100%;
-  padding: 0 50px;
   color: #e4e6e7;
-  font-style: 2rem;
-  line-height: 24px;
-  text-align: justify;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  margin-bottom: 24px;
   @media ${(props) => props.theme.breakpoints.sm} {
-    padding: 0.3rem;
-  }
-`;
-
-export const UtilityList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  justify-content: space-around;
-  margin: 2.5rem 0;
-  margin-top: auto;
-`;
-
-export const ExternalLinks = styled.a`
-  color: #d4c0c0;
-  font-size: 1.6rem;
-  padding: 1rem 1.5rem;
-  background: #6b3030;
-  border-radius: 15px;
-  transition: 0.5s;
-  &:hover {
-    background: #801414;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 16px;
   }
 `;
 
 export const TagList = styled.ul`
   display: flex;
-  /* 5-tag stacks overflowed the card on narrow viewports with space-around
-   and no wrapping. */
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.6rem 1.2rem;
-  padding: 2rem;
+  gap: 8px 16px;
+  margin-top: 8px;
 `;
+
 export const Tag = styled.li`
   color: #d8bfbf;
-  font-size: 1.5rem;
+  font-size: 17px;
+  line-height: 26px;
 `;

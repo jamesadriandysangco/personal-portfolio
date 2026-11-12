@@ -6,37 +6,39 @@ import {
   SectionTitle,
 } from "../../styles/GlobalComponents";
 import { ButtonRow, HeroNote, LeftSection } from "./HeroStyles";
-import { GmailComposeUrl, MailToUrl } from "../../constants/constants";
+import {
+  FullName,
+  GmailComposeUrl,
+  MailToUrl,
+} from "../../constants/constants";
 import LinkButton from "../../styles/GlobalComponents/LinkButton";
 
 const Hero = (props) => (
   <>
-    <Section row nopadding>
+    <Section row nopadding id="home">
       <LeftSection>
-        <SectionTitle main center>
-          Hello! <br />
-          I'm Tanveer
+        <SectionTitle as="h1" main center>
+          Hi, I'm {FullName}
         </SectionTitle>
         <SectionText>
-          Blockchain &amp; Backend Engineer. Four years building production
-          Node.js backends, the last two writing Solana programs in Rust and
-          Anchor.
+          <span>Web developer from Malolos, Bulacan</span>
+          <br />
+          <span>
+            BS Information Technology student at La Consolacion University of
+            the Philippines, building web apps and systems for school and real
+            users.
+          </span>
         </SectionText>
         <ButtonRow>
           <LinkButton href={GmailComposeUrl} target="_blank">
             Let's Talk
           </LinkButton>
-          {/* Resume button and its freshness note are hidden, not deleted —
-              ResumeUrl and ResumeUpdated still live in constants.js, so
-              restoring this is uncommenting it.
-          <LinkButton alt="resume" href={ResumeUrl} target="_blank">
-            Resume
+          <LinkButton alt="contact" href="#contact">
+            Contact Me
           </LinkButton>
-          */}
         </ButtonRow>
         <HeroNote>
           Not a Gmail user? <a href={MailToUrl}>Mail me from your own app</a>
-          {/* <br />Resume last updated {ResumeUpdated} */}
         </HeroNote>
       </LeftSection>
     </Section>

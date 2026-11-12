@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCubes, FaDocker, FaServer } from "react-icons/fa";
+import { FaLaptopCode, FaServer, FaTools } from "react-icons/fa";
 import {
   Section,
   SectionDivider,
@@ -16,68 +16,51 @@ import {
 
 const Technologies = () => (
   <Section id="tech">
-    <SectionDivider divider />
-    <SectionTitle>Technologies</SectionTitle>
+    <SectionDivider />
+    <SectionTitle>Skills</SectionTitle>
     <SectionText>
-      From Solana programs in Rust and Anchor to the Node.js services, data
-      models and infrastructure around them.
+      Most of what I build is web apps, with React or Next.js on the front and
+      ASP.NET or Laravel behind them.
     </SectionText>
     <List>
       <ListItem>
         <picture>
-          <FaCubes size="3rem" />
+          <FaLaptopCode size="3rem" aria-hidden="true" />
         </picture>
         <ListContainer>
-          <ListTitle>Blockchain</ListTitle>
+          <ListTitle as="h3">Front-End</ListTitle>
           <ListParagraph>
-            Solana, Rust, Anchor
-            <br />
-            PDAs, CPIs, Token Programs
-            <br />
-            Metaplex, Bubblegum
-            <br />
-            Borsh Serialization
+            I write HTML, CSS, JavaScript and TypeScript, mostly through React
+            and Next.js, and style with Tailwind CSS, Bootstrap or SCSS
+            depending on the project.
           </ListParagraph>
         </ListContainer>
       </ListItem>
       <ListItem>
         <picture>
-          <FaServer size="3rem" />
+          <FaServer size="3rem" aria-hidden="true" />
         </picture>
         <ListContainer>
-          <ListTitle>Back-End</ListTitle>
+          <ListTitle as="h3">Back-End</ListTitle>
           <ListParagraph>
-            Node.js, Express.js, Fastify
-            <br />
-            NestJS, TypeScript
-            <br />
-            GraphQL, WebSockets
-            <br />
-            PostgreSQL, MongoDB, Redis
-            <br />
-            Prisma, BullMQ, Microservices
+            Server-side I work with PHP and Laravel, C# and ASP.NET, and MySQL
+            databases hosted on Aiven, and I also code in Python and Java.
           </ListParagraph>
         </ListContainer>
       </ListItem>
       <ListItem>
         <picture>
-          <FaDocker size="3rem" />
+          <FaTools size="3rem" aria-hidden="true" />
         </picture>
         <ListContainer>
-          <ListTitle>DevOps &amp; Front-End</ListTitle>
+          <ListTitle as="h3">Tools &amp; Design</ListTitle>
           <ListParagraph>
-            Docker, CI/CD, GitHub Actions
-            <br />
-            AWS, GCP, DigitalOcean
-            <br />
-            Prometheus, Jest, TDD
-            <br />
-            Next.js, React.js
+            I plan screens in Figma before building them, keep my code on
+            GitHub, and deploy to Vercel.
           </ListParagraph>
         </ListContainer>
       </ListItem>
     </List>
-    <SectionDivider colorAlt />
   </Section>
 );
 
