@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Boxes = styled.div`
   width: 100%;
   display: grid;
-  /* layout fix: 4 tiles in one row were too narrow for the titles, so 2x2 */
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   margin-top: 16px;

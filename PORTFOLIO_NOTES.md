@@ -106,6 +106,6 @@ Not needed: `overflow-x: hidden` (no horizontal scroll at any width, fixed at th
 - Hero h1 is now "Hi, I'm Adi"; About says "I'm Adi". `FullName` is "James Adrian W. Dysangco" and still feeds the page title, meta description and photo alt.
 - Tagline "Web developer" → "Future Full-Stack Engineer" (the only "web developer" in the site).
 - Tools & Design now names ChatGPT, Claude, GitHub Copilot and Gemini as text. The column has one icon (FaTools), not one per tool, and react-icons 4.12.0 has no Gemini, Copilot or Claude icons anyway.
-- Achievements grid is now 2 columns on desktop and tablet (`/* layout fix */`, AcomplishmentsStyles.js). With 4 tiles in one row they were 242px (1440) and 152px (768) wide, and "Foundational" ran past the tile edge. Phones stay one per row.
+- Achievements grid is now 2 columns on desktop and tablet (AcomplishmentsStyles.js). With 4 tiles in one row they were 242px (1440) and 152px (768) wide, and "Foundational" ran past the tile edge. Phones stay one per row.
 - Checked at 390 / 768 / 1440px over CDP: no overlaps, no horizontal scroll, no tile text overflow, the h1 keeps its 32 / 56 / 65px size and doesn't touch the animation. `next build && next export` from a clean `.next/`: exit 0.
 - Footer template credit removed (and the keep-it rule in CLAUDE.md). README.md:42 still says "Design inspired by Tanveer Khan's portfolio template".
