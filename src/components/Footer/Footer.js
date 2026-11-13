@@ -85,18 +85,6 @@ const Footer = () => {
           )}
         </SocialContainer>
       </SocialIconsContainer>
-      <LinkTitle as="p" style={{ textAlign: "center", marginTop: "32px" }}>
-        Design inspired by{" "}
-        <a
-          href="https://github.com/Tanv33/Tanveer-Portfolio"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: "inherit", textDecoration: "underline" }}
-        >
-          Tanveer Khan
-        </a>
-        's portfolio template
-      </LinkTitle>
     </FooterWrapper>
   );
 };

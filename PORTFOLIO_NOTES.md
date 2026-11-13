@@ -12,7 +12,9 @@ No placeholders left. Each card shows the year it was built and its stack. The S
 
 ### Achievements
 
-No placeholders left. Microsoft Access and Excel are one tile (both are on the same Certiport transcript). Certificate images are in public/images/achievements/, both 1500x1000 (3:2): the C# certificate scaled to fit, the transcript scaled with a thin band of its own grey background added top and bottom. The transcript shows my home address and school email.
+No placeholders left. The two seminar tiles come from JPSSITE (Junior Philippine Student Society of Information Technology Educators) certificates of attendance, both at La Consolacion University Philippines: Pace Level Up v. 4.0, "IT Trends: Navigating the Ever - Changing Digital Landscape" (12 October 2023), and Pace Level Up v. 4.1, "From Pixels to Perfection: Unleashing Creativity in Game Development and Graphic Designing" (6 December 2023). Tiles use the short titles. Images were center-cropped from 2000x1414 to 3:2 (40px of border off top and bottom, no text lost) and saved as 1500x1000 JPGs. 2023 has no timeline entry yet.
+
+Microsoft Access and Excel are one tile (both are on the same Certiport transcript). Certificate images are in public/images/achievements/, both 1500x1000 (3:2): the C# certificate scaled to fit, the transcript scaled with a thin band of its own grey background added top and bottom. The transcript shows my home address and school email.
 
 ### Repo files
 
@@ -27,7 +29,7 @@ Everything else (name, logo, email, phone, location, social links, Hero, Skills,
 ## Decisions waiting on me
 
 - **Résumé.** No résumé was given, so the Hero's second button is now **Contact Me** → `#contact`. To switch back, drop the PDF in `public/`, set `ResumeUrl`, and use the snippet in the comment at src/components/Hero/Hero.js:38-40.
-- **Tagline.** Options are in the comment at src/components/Hero/Hero.js:24-27. #1 ("Web developer from Malolos, Bulacan") is live.
+- **Tagline.** "Future Full-Stack Engineer from Malolos, Bulacan" is live (src/components/Hero/Hero.js:20).
 - **Favicon.** `public/favicon.ico` is still a plain purple square.
 - **Unused `axios` dependency.** Not imported anywhere; removing it is optional.
 - **Carousel dot focus ring.** The template sets `outline: none` on the dots, so keyboard focus is invisible. Left alone.
@@ -99,6 +101,11 @@ Not needed: `overflow-x: hidden` (no horizontal scroll at any width, fixed at th
   - **Console:** only the 3 missing project images (404).
   - **Build:** `yarn build` from a clean `.next/` exits 0 with no warnings. Don’t build while `yarn dev` is running: `next export` then copies dev hot-update files into `out/`.
 
-## Template credit
+## Content update (2026-11-14)
 
-The original repo has no LICENSE, so the footer keeps a credit line: "Design inspired by Tanveer Khan's portfolio template", centred, with "Tanveer Khan" linking to https://github.com/Tanv33/Tanveer-Portfolio (src/components/Footer/Footer.js). Keep it.
+- Hero h1 is now "Hi, I'm Adi"; About says "I'm Adi". `FullName` is "James Adrian W. Dysangco" and still feeds the page title, meta description and photo alt.
+- Tagline "Web developer" → "Future Full-Stack Engineer" (the only "web developer" in the site).
+- Tools & Design now names ChatGPT, Claude, GitHub Copilot and Gemini as text. The column has one icon (FaTools), not one per tool, and react-icons 4.12.0 has no Gemini, Copilot or Claude icons anyway.
+- Achievements grid is now 2 columns on desktop and tablet (`/* layout fix */`, AcomplishmentsStyles.js). With 4 tiles in one row they were 242px (1440) and 152px (768) wide, and "Foundational" ran past the tile edge. Phones stay one per row.
+- Checked at 390 / 768 / 1440px over CDP: no overlaps, no horizontal scroll, no tile text overflow, the h1 keeps its 32 / 56 / 65px size and doesn't touch the animation. `next build && next export` from a clean `.next/`: exit 0.
+- Footer template credit removed (and the keep-it rule in CLAUDE.md). README.md:42 still says "Design inspired by Tanveer Khan's portfolio template".

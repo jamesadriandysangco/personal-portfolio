@@ -6,11 +6,7 @@ import {
   SectionTitle,
 } from "../../styles/GlobalComponents";
 import { ButtonRow, HeroNote, LeftSection } from "./HeroStyles";
-import {
-  FullName,
-  GmailComposeUrl,
-  MailToUrl,
-} from "../../constants/constants";
+import { GmailComposeUrl, MailToUrl } from "../../constants/constants";
 import LinkButton from "../../styles/GlobalComponents/LinkButton";
 
 const Hero = (props) => (
@@ -18,10 +14,10 @@ const Hero = (props) => (
     <Section row nopadding id="home">
       <LeftSection>
         <SectionTitle as="h1" main center>
-          Hi, I'm {FullName}
+          Hi, I'm Adi
         </SectionTitle>
         <SectionText>
-          <span>Web developer from Malolos, Bulacan</span>
+          <span>Future Full-Stack Engineer from Malolos, Bulacan</span>
           <br />
           <span>
             BS Information Technology student at La Consolacion University of

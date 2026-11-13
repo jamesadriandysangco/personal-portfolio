@@ -55,8 +55,9 @@ const Technologies = () => (
         <ListContainer>
           <ListTitle as="h3">Tools &amp; Design</ListTitle>
           <ListParagraph>
-            I plan screens in Figma before building them, keep my code on
-            GitHub, and deploy to Vercel.
+            I design in Figma, keep my code on GitHub, deploy with Vercel, and
+            use AI tools like ChatGPT, Claude, GitHub Copilot and Gemini to
+            debug and learn faster.
           </ListParagraph>
         </ListContainer>
       </ListItem>

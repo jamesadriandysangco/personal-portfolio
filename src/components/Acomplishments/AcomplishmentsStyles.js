@@ -3,14 +3,14 @@ import styled from "styled-components";
 export const Boxes = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* layout fix: 4 tiles in one row were too narrow for the titles, so 2x2 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   margin-top: 16px;
 
   @media ${(props) => props.theme.breakpoints.md} {
     gap: 16px;
     margin-top: 12px;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 
   @media ${(props) => props.theme.breakpoints.sm} {

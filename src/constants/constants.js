@@ -73,7 +73,7 @@ export const TimeLineData = [
   },
 ];
 
-export const FullName = "James Adrian Dysangco";
+export const FullName = "James Adrian W. Dysangco";
 export const ResumeUrl = "/[RESUME FILE].pdf";
 export const GithubUrl = "https://github.com/jamesadriandysangco";
 export const LinkedInUrl =
@@ -103,5 +103,17 @@ export const Achievements = [
     detail: "freeCodeCamp, October 2025",
     image: "/images/achievements/freecodecamp-csharp.png",
     alt: "freeCodeCamp and Microsoft Foundational C# developer certificate dated October 10, 2025",
+  },
+  {
+    title: "IT Trends",
+    detail: "Seminar – JPSSITE, October 2023",
+    image: "/images/achievements/jpssite-it-trends.jpg",
+    alt: "La Consolacion University Philippines certificate of attendance for the JPSSITE Pace Level Up v. 4.0 seminar IT Trends: Navigating the Ever-Changing Digital Landscape, October 12, 2023",
+  },
+  {
+    title: "From Pixels to Perfection",
+    detail: "Seminar – JPSSITE, December 2023",
+    image: "/images/achievements/jpssite-pixels-to-perfection.jpg",
+    alt: "La Consolacion University Philippines certificate of attendance for JPSSITE Pace Level Up v. 4.1, From Pixels to Perfection: Unleashing Creativity in Game Development and Graphic Designing, December 6, 2023",
   },
 ];

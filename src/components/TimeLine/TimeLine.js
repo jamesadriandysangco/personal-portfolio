@@ -15,10 +15,10 @@ const Timeline = () => {
       <SectionDivider colorAlt />
       <SectionTitle>About Me</SectionTitle>
       <SectionText>
-        I'm James, a BS Information Technology student at La Consolacion
-        University of the Philippines. I started in 2022 and graduate in 2027.
-        My first web pages came out of senior high at STI College Malolos, where
-        I took the Mobile App and Web Development strand.
+        I'm Adi, a BS Information Technology student at La Consolacion
+        University of the Philippines. I started in 2022 and I'm still studying
+        until 2027. My first web pages came out of senior high at STI College
+        Malolos, where I took the Mobile App and Web Development strand.
       </SectionText>
       <SectionText>
         These days the front end is usually React or Next.js. For the back end I

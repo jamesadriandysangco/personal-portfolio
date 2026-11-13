@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Single-page student portfolio, built on Tanveer Khan's portfolio template (no LICENSE in the original repo, so the footer keeps a credit line: keep it). Next.js 10 (pages router) + React 17 + styled-components, statically exported to `out/` and deployable to Firebase Hosting (project id in `.firebaserc` is still a placeholder).
+Single-page student portfolio, built on Tanveer Khan's portfolio template. Next.js 10 (pages router) + React 17 + styled-components, statically exported to `out/` and deployable to Firebase Hosting (project id in `.firebaserc` is still a placeholder).
 
 No tests, no linter, no TypeScript, no `next.config.js`. Prettier is the only tooling: `yarn format` / `yarn format:check`. Package manager: yarn v1 (`yarn.lock` is committed).
 
